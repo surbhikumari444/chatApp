@@ -74,7 +74,7 @@ export class SignUpComponent implements OnInit {
 
           if (apiResponse.status === 200) {
 
-      this.notifyService.showWarning('Signup successful', "ItSolutionStuff.com")
+      this.notifyService.showSuccess('Signup successful', "ItSolutionStuff.com")
 
 
             setTimeout(() => {

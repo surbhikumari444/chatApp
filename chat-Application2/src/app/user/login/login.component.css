@@ -1,0 +1,13 @@
+.a{
+   
+    padding-top: 50px;
+    margin: 0 auto; 
+    width: 520px;
+    /* text-align: center; */
+  
+  }
+  .navbar-nav{
+    float: right !important;
+    width: 100% !important;
+    display: block !important;
+    }

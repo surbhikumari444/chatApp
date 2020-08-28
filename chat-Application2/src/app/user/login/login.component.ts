@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
       this.appService.signinFunction(data)
         .subscribe((apiResponse) => {
 
+        
           if (apiResponse.status === 200) {
             console.log(apiResponse)
 
@@ -55,17 +56,27 @@ export class LoginComponent implements OnInit {
             this.cookieService.set('receiverName', apiResponse.data.userDetails.firstName + ' ' + apiResponse.data.userDetails.lastName);
            
              this.appService.setUserInfoInLocalStorage(apiResponse.data.userDetails)
-            
-             this.router.navigate(['/chat']);
+             this.notifyService.showSuccess('Signup successful', "ItSolutionStuff.com")
 
-          } else {
+
+            setTimeout(() => {
+
+              this.router.navigate(['/chat']);
+
+            }, 2000);
+            
+
+          } 
+          else {
 
             this.notifyService.showError("ItSolutionStuff.com",apiResponse.message)
+            
           
 
           }
 
-        }, (err) => {
+        }
+        , (err) => {
           this.notifyService.showError("ItSolutionStuff.com",'some error occured')
 
         });

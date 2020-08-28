@@ -17,7 +17,9 @@ import {CookieService } from 'ngx-cookie-service';
     CommonModule,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(
+      {closeButton: true,preventDuplicates: true,}
+    ),
     RouterModule.forChild([
       { path: 'sign-up', component: SignUpComponent }
     ])

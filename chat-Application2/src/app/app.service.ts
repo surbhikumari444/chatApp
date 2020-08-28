@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient ,HttpErrorResponse ,HttpHeaders , HttpParams} from '@angular/common/http';
 import {CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-
+import { catchError } from 'rxjs/operators';
 // import 'rxjs/add/operator/catch';
 // import 'rxjs/add/operator/do';
 
@@ -38,6 +38,7 @@ export class AppService {
 
     return this.http.post(`${this.url}/api/v1/users/login`, params);
   } // end of signinFunction function.
+  
   private handleError(err: HttpErrorResponse) {
 
     let errorMessage = '';
@@ -52,7 +53,7 @@ export class AppService {
 
     } // end condition *if
 
-    console.error(errorMessage);
+   // console.error(errorMessage);
 
     return Observable.throw(errorMessage);
 
