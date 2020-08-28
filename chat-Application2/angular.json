@@ -24,9 +24,22 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+
+              "src/styles.css",
+
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+
+              "./node_modules/ngx-toastr/toastr.css"
+
             ],
-            "scripts": []
+
+            "scripts": [
+
+              "./node_modules/jquery/dist/jquery.min.js",
+
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+
+            ]
           },
           "configurations": {
             "production": {
@@ -87,18 +100,13 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-            //   "src/styles.css",
-            //  "C:/Users/surbkuma/Desktop/Angular/chat-Application2/node_modules/bootstrap/dist/css/bootstrap.min.css",
-            //  "./node_modules/bootstrap/dist/css/bootstrap.min.css", 
-            //  "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "../node_modules/ngx-toastr/toastr.css",
-              "./node_modules/bootstrap3/dist/css/bootstrap.min.css"
-
+            
+              "styles": [
+                "src/styles.css"
+              
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+               
             ]
           }
         },
