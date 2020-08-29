@@ -29,8 +29,10 @@
                 <li class="clearfix cursorPointer" [ngClass]="{'activeChat': user.chatting == true}" (click)="userSelectedToChat(user.userId, user.name)"
                   *ngFor="let user of userList">
                   <div class="userPresence" *ngIf="user.userId != userInfo.userId">
-                    <user-details [userFirstName]="user.name" [userLastName]="''" [userStatus]="'online'" [messageRead]="user.unread"></user-details>
-                  </div>
+                    <!-- <div [userFirstName]="user.name" [userLastName]="''" [userStatus]="'online'" [messageRead]="user.unread"></div> -->
+                    <!-- <user-details [userFirstName]="user.name" [userLastName]="''" [userStatus]="'online'" [messageRead]="user.unread"></user-details> -->
+                    {{user.name}} </div>
+
                 </li>
                 
               </ul>
@@ -61,8 +63,9 @@
           <li class="clearfix cursorPointer" [ngClass]="{'activeChat': user.chatting == true}"
             *ngFor="let user of userList" (click)="userSelectedToChat(user.userId, user.name)">
             <div class="userPresence" *ngIf="user.userId != userInfo.userId"  >
-              <user-details [userFirstName]="user.name" [userLastName]="''" [userStatus]="'online'" [messageRead]="user.unread"></user-details>
-            </div>
+             {{user.name}} </div>
+              <!-- <user-details [userFirstName]="user.name" [userLastName]="''" [userStatus]="'online'" [messageRead]="user.unread"></user-details>
+            </div> -->
           </li>
          
         </ul>

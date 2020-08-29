@@ -103,19 +103,19 @@ export class SocketService {
 
   // } // end logout function
 
-  // public chatByUserId = (userId) => {
+  public chatByUserId = (userId) => {
 
-  //   return Observable.create((observer) => {
+    return Observable.create((observer) => {
       
-  //     this.socket.on(userId, (data) => {
+      this.socket.on(userId, (data) => {
 
-  //       observer.next(data);
+        observer.next(data);
 
-  //     }); // end Socket
+      }); // end Socket
 
-  //   }); // end Observable
+    }); // end Observable
 
-  // } // end chatByUserId
+  } // end chatByUserId
 
   // public SendChatMessage = (chatMsgObject) => {
 

@@ -15,6 +15,9 @@ import { SocketService } from '../../socket.service'
 })
 export class ChatBoxComponent implements OnInit {
 
+  public scrollToChatTop:boolean= false;
+  public messageText: any; 
+  public messageList: any = [];
   public authToken: any;
   public userInfo: any;
   public userList: any = [];
@@ -40,6 +43,8 @@ export class ChatBoxComponent implements OnInit {
     this.checkStatus();
     this.verifyUserConfirmation();
     this.getOnlineUserList();
+    this.getMessageFromAUser()
+
 
 
 
@@ -89,7 +94,33 @@ export class ChatBoxComponent implements OnInit {
           
           console.log(this.userList);
   
-        }); // end online-user-list
-    }
+        });} // end online-user-list
+
+        public pushToChatWindow : any =(data)=>{
+
+          this.messageText="";
+          this.messageList.push(data);
+          this.scrollToChatTop = false;
+      
+      
+        }// end push to chat window
+      
+    
+    public getMessageFromAUser :any =()=>{
+
+      this.socketService.chatByUserId(this.userInfo.userId)
+      .subscribe((data)=>{
+       
+
+        (this.receiverId==data.senderId)?this.messageList.push(data):'';
+
+        this.notifyService.showSuccess(`${data.senderName} says : ${data.message}`,"yeh")
+
+        this.scrollToChatTop=false;
+
+      });//end subscribe
+
+  }// end get message from a user 
+
 
 }
