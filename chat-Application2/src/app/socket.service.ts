@@ -89,48 +89,48 @@ export class SocketService {
 
 
 
-  // end events to be emitted
+  // // end events to be emitted
 
-  // chat related methods 
+  // // chat related methods 
 
   
 
-  public getChat(senderId, receiverId, skip): Observable<any> {
+  // public getChat(senderId, receiverId, skip): Observable<any> {
 
-    return this.http.get(`${this.url}/api/v1/chat/get/for/user?senderId=${senderId}&receiverId=${receiverId}&skip=${skip}&authToken=${this.cookieService.get('authtoken')}`)
-      .do(data => console.log('Data Received'))
-      .catch(this.handleError);
+  //   return this.http.get(`${this.url}/api/v1/chat/get/for/user?senderId=${senderId}&receiverId=${receiverId}&skip=${skip}&authToken=${this.cookieService.get('authtoken')}`)
+  //     .do(data => console.log('Data Received'))
+  //     .catch(this.handleError);
 
-  } // end logout function
+  // } // end logout function
 
-  public chatByUserId = (userId) => {
+  // public chatByUserId = (userId) => {
 
-    return Observable.create((observer) => {
+  //   return Observable.create((observer) => {
       
-      this.socket.on(userId, (data) => {
+  //     this.socket.on(userId, (data) => {
 
-        observer.next(data);
+  //       observer.next(data);
 
-      }); // end Socket
+  //     }); // end Socket
 
-    }); // end Observable
+  //   }); // end Observable
 
-  } // end chatByUserId
+  // } // end chatByUserId
 
-  public SendChatMessage = (chatMsgObject) => {
+  // public SendChatMessage = (chatMsgObject) => {
 
-    this.socket.emit('chat-msg', chatMsgObject);
+  //   this.socket.emit('chat-msg', chatMsgObject);
 
-  } // end getChatMessage
-
-
-  public exitSocket = () =>{
+  // } // end getChatMessage
 
 
-    this.socket.disconnect();
+  // public exitSocket = () =>{
 
 
-  }// end exit socket
+  //   this.socket.disconnect();
+
+
+  // }// end exit socket
 
 
 

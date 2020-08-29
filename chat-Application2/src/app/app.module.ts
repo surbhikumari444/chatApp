@@ -14,6 +14,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from './app.service';
 import {CookieService } from 'ngx-cookie-service';
+import { SocketService } from './socket.service'
 
 
 

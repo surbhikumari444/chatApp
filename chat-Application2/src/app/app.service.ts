@@ -53,7 +53,7 @@ export class AppService {
 
     } // end condition *if
 
-   // console.error(errorMessage);
+    console.error(errorMessage);
 
     return Observable.throw(errorMessage);
 
