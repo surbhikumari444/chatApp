@@ -122,5 +122,34 @@ export class ChatBoxComponent implements OnInit {
 
   }// end get message from a user 
 
+  // public logout: any = () => {
+
+  //   this.appService.logout()
+  //     .subscribe((apiResponse) => {
+
+  //       if (apiResponse.status === 200) {
+  //         console.log("logout called")
+  //         this.cookieService.delete('authtoken');
+
+  //         this.cookieService.delete('receiverId');
+
+  //         this.cookieService.delete('receiverName');
+
+  //         this.socketService.exitSocket()
+
+  //         this.router.navigate(['/']);
+
+  //       } else {
+  //         this.notifyService.showError(apiResponse.message,"yeh")
+
+  //       } // end condition
+
+  //     }, (err) => {
+  //       this.notifyService.showError,('some error occured')
+
+
+  //     });
+
+  // } // end logout
 
 }

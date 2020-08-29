@@ -102,6 +102,7 @@ export class SocketService {
   //     .catch(this.handleError);
 
   // } // end logout function
+  
 
   public chatByUserId = (userId) => {
 
