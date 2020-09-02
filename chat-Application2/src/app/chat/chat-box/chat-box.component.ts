@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild , ElementRef} from '@angular/core';
 import {CookieService } from 'ngx-cookie-service';
 
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,8 +15,14 @@ import { SocketService } from '../../socket.service'
 })
 export class ChatBoxComponent implements OnInit {
 
+  @ViewChild('scrollMe', { read: ElementRef }) 
+
+  public scrollMe: ElementRef;
+
+  public pageValue: number = 0;
+  public loadingPreviousChat: boolean = false;
   public scrollToChatTop:boolean= false;
-  public messageText: any; 
+  public messageText: any=''; 
   public messageList: any = [];
   public authToken: any;
   public userInfo: any;
@@ -122,34 +128,170 @@ export class ChatBoxComponent implements OnInit {
 
   }// end get message from a user 
 
-  // public logout: any = () => {
+  public logout: any = () => {
 
-  //   this.appService.logout()
-  //     .subscribe((apiResponse) => {
+    this.appService.logout()
+      .subscribe((apiResponse) => {
 
-  //       if (apiResponse.status === 200) {
-  //         console.log("logout called")
-  //         this.cookieService.delete('authtoken');
+        if (apiResponse.status === 200) {
+          console.log("logout called")
+          this.cookieService.delete('authtoken');
 
-  //         this.cookieService.delete('receiverId');
+          this.cookieService.delete('receiverId');
 
-  //         this.cookieService.delete('receiverName');
+          this.cookieService.delete('receiverName');
 
-  //         this.socketService.exitSocket()
+          this.socketService.exitSocket()
 
-  //         this.router.navigate(['/']);
-
-  //       } else {
-  //         this.notifyService.showError(apiResponse.message,"yeh")
-
-  //       } // end condition
-
-  //     }, (err) => {
-  //       this.notifyService.showError,('some error occured')
+          this.notifyService.showError('Logout successful', "ItSolutionStuff.com")
 
 
-  //     });
+          setTimeout(() => {
 
-  // } // end logout
+            this.router.navigate(['/']);
+          }, 2000);
+          
+
+        } else {
+          this.notifyService.showError(apiResponse.message,"yeh")
+
+        } // end condition
+
+      }, (err) => {
+        this.notifyService.showError,('some error occured')
+
+
+      });
+
+  } // end logout
+
+
+  public sendMessageUsingKeypress: any = (event: any) => {
+
+    if (event.keyCode === 13) { // 13 is keycode of enter.
+
+      this.sendMessage();
+      console.log(this.messageText)
+
+    }
+
+  } // end sendMessageUsingKeypress
+  public sendMessage: any = () => {
+
+    if(this.messageText){
+
+      let chatMsgObject = {
+        senderName: this.userInfo.firstName + " " + this.userInfo.lastName,
+        senderId: this.userInfo.userId,
+        receiverName: this.cookieService.get('receiverName'),
+        receiverId: this.cookieService.get('receiverId'),
+        message: this.messageText,
+        createdOn: new Date()
+      } // end chatMsgObject
+      console.log(chatMsgObject);
+      this.socketService.SendChatMessage(chatMsgObject)
+      this.pushToChatWindow(chatMsgObject)
+      
+
+    }
+    else{
+      this.notifyService.showWarning('text message can not be empty','yeh')
+
+    }
+
+  } // end sendMessage
+
+  public userSelectedToChat: any = (id, name) => {
+
+    console.log("setting user as active") 
+
+    // setting that user to chatting true   
+    this.userList.map((user)=>{
+        if(user.userId==id){
+          user.chatting=true;
+        }
+        else{
+          user.chatting = false;
+        }
+    })
+
+    this.cookieService.set('receiverId', id);
+
+    this.cookieService.set('receiverName', name);
+
+
+    this.receiverName = name;
+
+    this.receiverId = id;
+
+    this.messageList = [];
+
+    this.pageValue = 0;
+
+    let chatDetails = {
+      userId: this.userInfo.userId,
+      senderId: id
+    }
+
+
+    this.socketService.markChatAsSeen(chatDetails);
+
+    this.getPreviousChatWithAUser();
+
+  } // end userBtnClick function
+
+
+  public loadEarlierPageOfChat: any = () => {
+
+    this.loadingPreviousChat = true;
+
+    this.pageValue++;
+    this.scrollToChatTop = true;
+
+    this.getPreviousChatWithAUser() 
+
+  } 
+
+
+  public getPreviousChatWithAUser :any = ()=>{
+    let previousData = (this.messageList.length > 0 ? this.messageList.slice() : []);
+    
+    this.socketService.getChat(this.userInfo.userId, this.receiverId, this.pageValue * 10)
+    .subscribe((apiResponse) => {
+
+      console.log(apiResponse);
+
+      if (apiResponse.status == 200) {
+
+        this.messageList = apiResponse.data.concat(previousData);
+
+      } else {
+
+        this.messageList = previousData;
+        this.notifyService.showWarning('No Messages available','yeh')
+
+       
+
+      }
+
+      this.loadingPreviousChat = false;
+
+    }, (err) => {
+
+      this.notifyService.showError('some error occured','yeh')
+
+
+    });
+
+  }// end get previous chat with any user
+
+  public showUserName =(name:string)=>{
+
+    this.notifyService.showSuccess("You are chatting with "+name ,'yeh')
+
+  }
+
+
+
 
 }

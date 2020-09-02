@@ -1,20 +1,42 @@
 import { Injectable } from '@angular/core';
-import {HttpClient ,HttpErrorResponse ,HttpHeaders , HttpParams} from '@angular/common/http';
-import {CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-// import 'rxjs/add/operator/catch';
-// import 'rxjs/add/operator/do';
+import { Observable } from 'rxjs/Observable';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from "@angular/common/http";
 
 
-@Injectable({
-  providedIn: 'root'
-})
+
+@Injectable()
 export class AppService {
 
-  private url = 'https://chatapi.edwisor.com'
+  private url =  'https://chatapi.edwisor.com';
 
-  constructor( public http: HttpClient, private cookieService :CookieService ) { }
+  constructor(
+    public http: HttpClient
+  ) {
+
+    
+
+  } // end constructor  
+
+
+  public getUserInfoFromLocalstorage = () => {
+
+    return JSON.parse(localStorage.getItem('userInfo'));
+
+  } // end getUserInfoFromLocalstorage
+
+
+  public setUserInfoInLocalStorage = (data) =>{
+
+    localStorage.setItem('userInfo', JSON.stringify(data))
+
+
+  }
 
   public signupFunction(data): Observable<any> {
 
@@ -38,7 +60,19 @@ export class AppService {
 
     return this.http.post(`${this.url}/api/v1/users/login`, params);
   } // end of signinFunction function.
+
   
+  public logout(): Observable<any> {
+
+    const params = new HttpParams()
+      .set('authToken', Cookie.get('authtoken'))
+
+    return this.http.post(`${this.url}/api/v1/users/logout`, params);
+
+  } // end logout function
+
+  
+
   private handleError(err: HttpErrorResponse) {
 
     let errorMessage = '';
@@ -58,26 +92,5 @@ export class AppService {
     return Observable.throw(errorMessage);
 
   }  // END handleError
-  public setUserInfoInLocalStorage = (data) =>{
-
-    localStorage.setItem('userInfo', JSON.stringify(data))
-
-
-  }
-  public getUserInfoFromLocalstorage = () => {
-
-    return JSON.parse(localStorage.getItem('userInfo'));
-
-  } // end getUserInfoFromLocalstorage
-
-  
-  public logout(): Observable<any> {
-
-    const params = new HttpParams()
-      .set('authToken', this.cookieService.get('authtoken'))
-
-    return this.http.post(`${this.url}/api/v1/users/logout`, params);
-
-  } // end logout function
 
 }

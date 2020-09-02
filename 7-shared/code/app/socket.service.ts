@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import {HttpClient ,HttpErrorResponse ,HttpHeaders , HttpParams} from '@angular/common/http';
-import {CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
+
+
 import * as io from 'socket.io-client';
-import { tap } from 'rxjs/operators';
-import { catchError } from 'rxjs/operators'; 
 
+import { Observable } from 'rxjs/Observable';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
-@Injectable({
-  providedIn: 'root'
-})
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpErrorResponse, HttpParams } from "@angular/common/http";
+
+@Injectable()
 export class SocketService {
 
   private url = 'https://chatapi.edwisor.com';
@@ -17,11 +20,13 @@ export class SocketService {
   private socket;
 
 
-  constructor(public http: HttpClient , private cookieService :CookieService) { 
-    this.socket = io(this.url);
+  constructor(public http: HttpClient) {
     // connection is being created.
     // that handshake
+    this.socket = io(this.url);
+
   }
+
   // events to be listened 
 
   public verifyUser = () => {
@@ -87,20 +92,19 @@ export class SocketService {
 
 
 
-  // // end events to be emitted
+  // end events to be emitted
 
-  // // chat related methods 
+  // chat related methods 
 
   
 
   public getChat(senderId, receiverId, skip): Observable<any> {
 
-    return this.http.get(`${this.url}/api/v1/chat/get/for/user?senderId=${senderId}&receiverId=${receiverId}&skip=${skip}&authToken=${this.cookieService.get('authtoken')}`)
-      .pipe(tap(data => console.log('Data Received')))
-      .pipe(catchError(this.handleError));
+    return this.http.get(`${this.url}/api/v1/chat/get/for/user?senderId=${senderId}&receiverId=${receiverId}&skip=${skip}&authToken=${Cookie.get('authtoken')}`)
+      .do(data => console.log('Data Received'))
+      .catch(this.handleError);
 
   } // end logout function
-  
 
   public chatByUserId = (userId) => {
 
